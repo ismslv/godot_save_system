@@ -1,0 +1,11 @@
+battery
+Ele.G
+https://sketchfab.com/3d-models/battery-low-poly-c726f8e634f14a7b9bcde2b96b3f7ba4
+
+cone
+SusanKing
+https://sketchfab.com/3d-models/traffic-road-cone-87e57a593d684dc4a6dfd70e598b1cef
+
+godotbot
+DJMaesen
+https://sketchfab.com/3d-models/godotbot-863e6d679f114be59d43127e7e49d599

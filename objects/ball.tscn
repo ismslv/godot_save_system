@@ -1,0 +1,33 @@
+[gd_scene load_steps=6 format=3 uid="uid://cho4kit1772yw"]
+
+[ext_resource type="Script" path="res://scripts/scene_objects/ball.gd" id="1_y2uce"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_06bta"]
+friction = 0.6
+bounce = 0.3
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jgsyb"]
+resource_local_to_scene = true
+
+[sub_resource type="SphereMesh" id="SphereMesh_qq1n1"]
+radius = 1.0
+height = 2.0
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_7ahdw"]
+radius = 1.0
+
+[node name="ball" type="RigidBody3D" groups=["save_transform"]]
+collision_layer = 2
+collision_mask = 3
+mass = 0.3
+physics_material_override = SubResource("PhysicsMaterial_06bta")
+script = ExtResource("1_y2uce")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.402676, 0, 0, 0, 0.402676, 0, 0, 0, 0.402676, 0, 0, 0)
+material_override = SubResource("StandardMaterial3D_jgsyb")
+mesh = SubResource("SphereMesh_qq1n1")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(0.402676, 0, 0, 0, 0.402676, 0, 0, 0, 0.402676, 0, 0, 0)
+shape = SubResource("SphereShape3D_7ahdw")

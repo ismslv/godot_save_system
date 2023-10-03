@@ -1,0 +1,411 @@
+[gd_scene load_steps=23 format=3 uid="uid://1lkm8kotpe43"]
+
+[ext_resource type="Script" path="res://scripts/main.gd" id="1_70wyd"]
+[ext_resource type="PackedScene" uid="uid://ci6il2pi0cljv" path="res://models/title.tscn" id="2_qwfo8"]
+[ext_resource type="PackedScene" uid="uid://cgs1q3jv1ca0j" path="res://objects/player.tscn" id="3_dbcb3"]
+[ext_resource type="Script" path="res://scripts/scene_objects/camera_smooth_follow.gd" id="4_6l6fe"]
+[ext_resource type="PackedScene" uid="uid://bfxt8booshaco" path="res://models/cone.tscn" id="6_mkeiq"]
+[ext_resource type="PackedScene" uid="uid://ce6c5qyp0r2jp" path="res://objects/trigger.tscn" id="7_sgol0"]
+[ext_resource type="PackedScene" uid="uid://b0rsifipkwjai" path="res://objects/overlay_loading.tscn" id="7_v4li1"]
+[ext_resource type="Texture2D" uid="uid://dhacd277hyqs1" path="res://images/fruits.png" id="8_kihl8"]
+[ext_resource type="Script" path="res://animation_nodes/rotating.gd" id="9_gv2jd"]
+[ext_resource type="Script" path="res://animation_nodes/wobbling.gd" id="10_0xm4r"]
+[ext_resource type="PackedScene" uid="uid://cqlf224ie31sv" path="res://objects/battery.tscn" id="11_u84o1"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_efoow"]
+size = Vector2(50, 50)
+subdivide_width = 50
+subdivide_depth = 50
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_m36t3"]
+bounce = 0.1
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_2u4wd"]
+sky_top_color = Color(0.513726, 0.584314, 0.686275, 1)
+sky_horizon_color = Color(0.772549, 0.780392, 0.792157, 1)
+sun_angle_max = 125.56
+use_debanding = false
+
+[sub_resource type="Sky" id="Sky_s5qbh"]
+sky_material = SubResource("ProceduralSkyMaterial_2u4wd")
+
+[sub_resource type="Environment" id="Environment_gfr44"]
+background_mode = 1
+background_color = Color(0.701961, 0.717647, 0.752941, 1)
+sky = SubResource("Sky_s5qbh")
+ambient_light_source = 3
+ambient_light_color = Color(0.478431, 0.478431, 0.478431, 1)
+reflected_light_source = 2
+tonemap_mode = 3
+ssao_radius = 1.8
+ssao_intensity = 2.33
+ssao_power = 4.24264
+ssao_light_affect = 0.5
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_m5klq"]
+albedo_color = Color(0.156863, 0.156863, 0.156863, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_s7k4n"]
+albedo_color = Color(0.156863, 0.156863, 0.156863, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_imwpy"]
+size = Vector3(5.11466, 0.739789, 1.0881)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_rxosy"]
+size = Vector3(0.909521, 0.270622, 0.0833625)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q17f1"]
+atlas = ExtResource("8_kihl8")
+region = Rect2(2.08165e-12, 2.08165e-12, 512, 512)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wpgw8"]
+albedo_color = Color(0, 0, 0, 1)
+
+[node name="main" type="Node3D"]
+script = ExtResource("1_70wyd")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.802588, 3.99511e-07, 0.596533, -0.393095, 0.752173, 0.528878, -0.448696, -0.658966, 0.603686, 0, 0, 0)
+shadow_enabled = true
+
+[node name="Floor" type="CSGMesh3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.086, 2.08165e-12, -0.004)
+use_collision = true
+collision_layer = 3
+mesh = SubResource("PlaneMesh_efoow")
+
+[node name="Box" type="CSGBox3D" parent="Floor"]
+transform = Transform3D(-0.0236994, 0.647871, 0.761381, -0.999719, -0.0153585, -0.0180493, -3.2894e-10, -0.761595, 0.648053, -1.70172, 0.0837458, 1.69002)
+use_collision = true
+collision_layer = 3
+collision_mask = 3
+size = Vector3(0.170437, 0.71371, 0.737723)
+
+[node name="Box2" type="CSGBox3D" parent="Floor"]
+transform = Transform3D(-0.012952, -0.28373, 0.958816, -0.999719, -0.0153585, -0.0180493, 0.0198471, -0.958781, -0.283451, 4.24755, 0.0837458, -0.970859)
+use_collision = true
+collision_layer = 3
+collision_mask = 3
+size = Vector3(0.170437, 0.71371, 0.737723)
+
+[node name="title" parent="." instance=ExtResource("2_qwfo8")]
+transform = Transform3D(-5.204e-08, -4.15244e-16, -1.19054, 4.15244e-16, 1.19054, -4.15244e-16, 1.19054, -4.15244e-16, -5.204e-08, -2.03551, 1.42997, -0.468675)
+
+[node name="RigidBody3D" parent="title" index="20"]
+mass = 0.8
+physics_material_override = SubResource("PhysicsMaterial_m36t3")
+
+[node name="CSGBox3D" parent="title/RigidBody3D" index="2"]
+transform = Transform3D(-2.14873e-08, -2.48812e-08, -0.284608, -4.29746e-08, -0.284608, 2.48812e-08, -0.284608, 4.29746e-08, 2.14873e-08, -0.35397, -0.0272847, -1.63582)
+
+[node name="Player" parent="." instance=ExtResource("3_dbcb3")]
+unique_name_in_owner = true
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.915037, 0.40337, 0, -0.40337, 0.915037, 0.702772, 2.845, 6.31664)
+environment = SubResource("Environment_gfr44")
+fov = 40.0
+
+[node name="Following" type="Node" parent="Camera3D" node_paths=PackedStringArray("target")]
+script = ExtResource("4_6l6fe")
+target = NodePath("../../Player")
+delay = 6.0
+
+[node name="Cone" parent="." instance=ExtResource("6_mkeiq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.08, -1.19209e-07, 1.86136)
+
+[node name="Cone2" parent="." instance=ExtResource("6_mkeiq")]
+transform = Transform3D(0.932727, 0.360583, 0, -0.360583, 0.932727, 0, 0, 0, 1, -0.276474, 0.16233, 1.8945)
+
+[node name="Cone3" parent="." instance=ExtResource("6_mkeiq")]
+transform = Transform3D(-0.190724, -0.880857, 0.433261, 0.971366, -0.23305, -0.0462104, 0.141676, 0.412041, 0.900083, 3.59997, 0.291461, -1.65546)
+
+[node name="Supports" type="StaticBody3D" parent="."]
+collision_layer = 3
+collision_mask = 3
+
+[node name="Support1" type="CSGBox3D" parent="Supports"]
+transform = Transform3D(1.25049, -3.34773e-24, 2.87353e-16, 0, 1.25049, -7.40488e-24, 0, -1.07526e-23, 1.25049, 0.46975, 0.31722, -0.814252)
+material_override = SubResource("StandardMaterial3D_m5klq")
+size = Vector3(4.15592, 0.595046, 0.293272)
+
+[node name="Support2" type="CSGBox3D" parent="Supports"]
+transform = Transform3D(1.25049, 4.95918e-23, 2.95015e-15, -1.04933e-22, 1.25049, -8.58683e-23, -2.96334e-15, 9.08679e-24, 1.25049, -0.466801, 0.67287, -1.18276)
+material_override = SubResource("StandardMaterial3D_s7k4n")
+size = Vector3(2.61227, 1.1868, 0.297499)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Supports"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.381164, 0.381344, -0.846198)
+shape = SubResource("BoxShape3D_imwpy")
+
+[node name="UI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -235.0
+grow_horizontal = 0
+grow_vertical = 2
+theme_override_constants/separation = 17
+
+[node name="PanelContainer" type="PanelContainer" parent="UI/VBoxContainer"]
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="UI/VBoxContainer/PanelContainer"]
+layout_mode = 2
+color = Color(0, 0, 0, 0.647059)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/VBoxContainer/PanelContainer"]
+layout_mode = 2
+
+[node name="Label7" type="Label" parent="UI/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "SAVES"
+horizontal_alignment = 1
+
+[node name="Button" type="Button" parent="UI/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "SAVE GAME [F5]"
+
+[node name="Button2" type="Button" parent="UI/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "LOAD GAME [F6]"
+
+[node name="PanelContainer4" type="PanelContainer" parent="UI/VBoxContainer"]
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="UI/VBoxContainer/PanelContainer4"]
+layout_mode = 2
+color = Color(0, 0, 0, 0.647059)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/VBoxContainer/PanelContainer4"]
+layout_mode = 2
+
+[node name="Label7" type="Label" parent="UI/VBoxContainer/PanelContainer4/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "STATS"
+horizontal_alignment = 1
+
+[node name="Label3" type="Label" parent="UI/VBoxContainer/PanelContainer4/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 0.513726)
+theme_override_font_sizes/font_size = 18
+text = "CHARGE LEVEL"
+
+[node name="ChargeSlider" type="HSlider" parent="UI/VBoxContainer/PanelContainer4/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+step = 0.1
+value = 100.0
+editable = false
+
+[node name="Label4" type="Label" parent="UI/VBoxContainer/PanelContainer4/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 0.513726)
+theme_override_font_sizes/font_size = 25
+text = "INVENTORY"
+
+[node name="BatteriesField" type="Label" parent="UI/VBoxContainer/PanelContainer4/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 0.513726)
+theme_override_font_sizes/font_size = 18
+text = "BATTERIES: 0"
+
+[node name="PanelContainer2" type="PanelContainer" parent="UI/VBoxContainer"]
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="UI/VBoxContainer/PanelContainer2"]
+layout_mode = 2
+color = Color(0, 0, 0, 0.647059)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/VBoxContainer/PanelContainer2"]
+layout_mode = 2
+
+[node name="Label7" type="Label" parent="UI/VBoxContainer/PanelContainer2/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "CONFIGS"
+horizontal_alignment = 1
+
+[node name="Control" type="HSeparator" parent="UI/VBoxContainer/PanelContainer2/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label3" type="Label" parent="UI/VBoxContainer/PanelContainer2/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 0.513726)
+theme_override_font_sizes/font_size = 25
+text = "GAMEPLAY"
+
+[node name="Label" type="Label" parent="UI/VBoxContainer/PanelContainer2/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 0.513726)
+theme_override_font_sizes/font_size = 18
+text = "HERO SPEED"
+
+[node name="SpeedSlider" type="HSlider" parent="UI/VBoxContainer/PanelContainer2/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+min_value = 0.2
+max_value = 4.0
+step = 0.1
+value = 1.0
+
+[node name="Label6" type="Label" parent="UI/VBoxContainer/PanelContainer2/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 0.513726)
+theme_override_font_sizes/font_size = 18
+text = "CANNON ANGLE"
+
+[node name="CannonSlider" type="HSlider" parent="UI/VBoxContainer/PanelContainer2/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+max_value = 90.0
+
+[node name="Control2" type="HSeparator" parent="UI/VBoxContainer/PanelContainer2/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label4" type="Label" parent="UI/VBoxContainer/PanelContainer2/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 0.513726)
+theme_override_font_sizes/font_size = 25
+text = "GRAPHICS"
+
+[node name="Label2" type="Label" parent="UI/VBoxContainer/PanelContainer2/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 0.513726)
+theme_override_font_sizes/font_size = 18
+text = "ANTIALIASING"
+
+[node name="FieldAA" type="CheckButton" parent="UI/VBoxContainer/PanelContainer2/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "FXAA"
+
+[node name="Label5" type="Label" parent="UI/VBoxContainer/PanelContainer2/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 0.513726)
+theme_override_font_sizes/font_size = 18
+text = "SHADOWS"
+
+[node name="FieldAO" type="CheckButton" parent="UI/VBoxContainer/PanelContainer2/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "OCCLUSION"
+
+[node name="Button2" type="Button" parent="UI/VBoxContainer/PanelContainer2/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "SAVE CONFIGS"
+
+[node name="Button3" type="Button" parent="UI/VBoxContainer/PanelContainer2/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "REVERT TO DEFAULT"
+
+[node name="LettersPusher" type="RigidBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.22632, 1.07312, -0.89341)
+collision_layer = 3
+collision_mask = 3
+input_ray_pickable = false
+gravity_scale = 2.66454e-15
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="LettersPusher"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.0819677)
+shape = SubResource("BoxShape3D_rxosy")
+
+[node name="FruitGenerator" parent="." instance=ExtResource("7_sgol0")]
+transform = Transform3D(1, -3.48787e-16, 3.48787e-16, 3.48787e-16, 1, -3.48787e-16, -3.48787e-16, 3.48787e-16, 1, 2.92699, 0.00394845, 1.4799)
+
+[node name="FruitScreen" type="Sprite3D" parent="FruitGenerator"]
+transform = Transform3D(0.309764, -1.08042e-16, 3.48787e-16, 1.08042e-16, 0.309764, -3.48787e-16, -1.08042e-16, 1.08042e-16, 1, 0, 0.808263, -0.543679)
+cast_shadow = 0
+texture = SubResource("AtlasTexture_q17f1")
+
+[node name="Rotating" type="Node3D" parent="FruitGenerator/FruitScreen"]
+script = ExtResource("9_gv2jd")
+speed = 0.2
+goal = 360.0
+
+[node name="Wobbling" type="Node3D" parent="FruitGenerator/FruitScreen"]
+script = ExtResource("10_0xm4r")
+wobble_speed = 1.0
+wobble_size = 0.2
+
+[node name="Label3D" type="Label3D" parent="FruitGenerator"]
+transform = Transform3D(1, -6.97574e-16, -1.5246e-23, -1.5246e-23, -4.37114e-08, 1, -6.97574e-16, -1, -4.37114e-08, 0.0400395, 0.01, 0.535076)
+text = "random fruit generator"
+
+[node name="Label3D2" type="Label3D" parent="FruitGenerator"]
+transform = Transform3D(1, -6.97574e-16, -1.5246e-23, -1.5246e-23, -4.37114e-08, 1, -6.97574e-16, -1, -4.37114e-08, 0.0400395, 0.01, 0.836981)
+text = "seed"
+
+[node name="BallDispenser" parent="." instance=ExtResource("7_sgol0")]
+transform = Transform3D(1, -3.48787e-16, 3.48787e-16, 3.48787e-16, 1, -3.48787e-16, -3.48787e-16, 3.48787e-16, 1, -1.84601, 0.00394845, 1.4799)
+
+[node name="Label3D" type="Label3D" parent="BallDispenser"]
+transform = Transform3D(1, -6.97574e-16, -1.5246e-23, -1.5246e-23, -4.37114e-08, 1, -6.97574e-16, -1, -4.37114e-08, 0.0400395, 0.01, 0.535076)
+text = "ball cannon"
+
+[node name="Label3D2" type="Label3D" parent="BallDispenser"]
+transform = Transform3D(1, -6.97573e-16, 1.21125e-22, -6.05526e-23, -4.37114e-08, 1, -6.97573e-16, -1, -4.37114e-08, 0.0400395, 0.01, 0.796962)
+text = "seed"
+
+[node name="SourcePoint" type="Node3D" parent="BallDispenser"]
+transform = Transform3D(1, -3.48787e-16, 3.48787e-16, 3.48787e-16, 1, -3.48787e-16, -3.48787e-16, 3.48787e-16, 1, -0.285998, 0, -1.01695)
+
+[node name="Source" type="Node3D" parent="BallDispenser/SourcePoint"]
+transform = Transform3D(0.91212, 0.409923, 3.31716e-16, -0.38986, 0.867478, -0.309017, -0.126673, 0.281861, 0.951056, 0, 0, 0)
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="BallDispenser/SourcePoint/Source"]
+use_collision = true
+collision_layer = 3
+collision_mask = 3
+height = 0.85
+sides = 16
+material = SubResource("StandardMaterial3D_wpgw8")
+
+[node name="Rotating" type="Node3D" parent="BallDispenser/SourcePoint"]
+script = ExtResource("9_gv2jd")
+enabled = false
+speed = 2.0
+loop = false
+
+[node name="battery" parent="." instance=ExtResource("11_u84o1")]
+transform = Transform3D(0.171379, 0, 0.985205, 0, 1, 0, -0.985205, 0, 0.171379, -0.701156, 0.126447, 2.51029)
+
+[node name="battery2" parent="." instance=ExtResource("11_u84o1")]
+transform = Transform3D(-0.99585, 0, -0.091015, 0, 1, 0, 0.091015, 0, -0.995849, -3.92129, 0.126447, -0.549567)
+
+[node name="battery3" parent="." instance=ExtResource("11_u84o1")]
+transform = Transform3D(-0.999615, 0.0120193, 0.025017, 0.0261183, 0.102454, 0.994395, 0.00938884, 0.994665, -0.102729, 4.03036, 0.314263, 0.91178)
+
+[node name="Overlay" parent="." instance=ExtResource("7_v4li1")]
+visible = false
+z_index = 10
+
+[connection signal="button_up" from="UI/VBoxContainer/PanelContainer/VBoxContainer/Button" to="." method="_on_button_save"]
+[connection signal="button_up" from="UI/VBoxContainer/PanelContainer/VBoxContainer/Button2" to="." method="_on_button_load"]
+[connection signal="drag_ended" from="UI/VBoxContainer/PanelContainer2/VBoxContainer/SpeedSlider" to="." method="_on_speed_slider"]
+[connection signal="drag_ended" from="UI/VBoxContainer/PanelContainer2/VBoxContainer/CannonSlider" to="." method="_on_cannon_angle_slider"]
+[connection signal="toggled" from="UI/VBoxContainer/PanelContainer2/VBoxContainer/FieldAA" to="." method="_on_field_aa_toggled"]
+[connection signal="toggled" from="UI/VBoxContainer/PanelContainer2/VBoxContainer/FieldAO" to="." method="_on_field_ao_toggled"]
+[connection signal="button_up" from="UI/VBoxContainer/PanelContainer2/VBoxContainer/Button2" to="." method="_on_button_save_configs"]
+[connection signal="button_up" from="UI/VBoxContainer/PanelContainer2/VBoxContainer/Button3" to="." method="_on_button_reset_configs"]
+[connection signal="on_trigger" from="FruitGenerator" to="." method="_on_trigger_random"]
+[connection signal="on_trigger" from="BallDispenser" to="." method="_on_trigger_dispenser"]
+
+[editable path="title"]
